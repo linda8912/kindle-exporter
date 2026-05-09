@@ -1,0 +1,16 @@
+# 🚨 USER SECRETS — never commit
+data.json
+
+# Build artifacts
+main.js
+node_modules/
+
+# Plugin runtime — temp EPUBs and downloaded images
+exports/
+
+# Editor / OS junk
+.DS_Store
+Thumbs.db
+*.log
+.vscode/
+.idea/

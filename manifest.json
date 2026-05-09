@@ -1,0 +1,9 @@
+{
+  "id": "kindle-exporter",
+  "name": "Kindle Exporter",
+  "version": "1.0.0",
+  "minAppVersion": "0.15.0",
+  "description": "Convert the current note to EPUB and send it to your Kindle via email in one click.",
+  "author": "Hua Yu",
+  "isDesktopOnly": true
+}
