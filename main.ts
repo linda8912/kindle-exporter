@@ -137,6 +137,16 @@ export default class KindleExporterPlugin extends Plugin {
       const tempMdPath = path.join(workDir, "_temp_" + activeFile.name);
       fs.writeFileSync(tempMdPath, processedContent, "utf8");
 
+      // Write a small stylesheet so EPUB readers (incl. Kindle) actually paint
+      // <mark> tags as highlights. Pandoc's `+mark` extension converts ==text==
+      // to <mark>text</mark>, but most EPUB renderers won't style it without CSS.
+      const cssPath = path.join(workDir, "style.css");
+      fs.writeFileSync(
+        cssPath,
+        `mark { background-color: #fff59d; color: inherit; padding: 0 0.15em; }\n`,
+        "utf8"
+      );
+
       const epubName = activeFile.basename + ".epub";
       // In "save" mode, output the EPUB next to the source note in the vault
       // so the user can find it easily. In "send" mode, use the temp exports
@@ -147,10 +157,14 @@ export default class KindleExporterPlugin extends Plugin {
           : path.join(exportsDir, epubName);
 
       // Step 1b: Run pandoc on the preprocessed file
+      //   --from=markdown+mark : enable Obsidian-style ==highlight== syntax
+      //   --css                : inject the stylesheet so <mark> renders yellow
       const pandocCmd = [
         `"${this.settings.pandocPath}"`,
         `"${tempMdPath}"`,
         `-o "${outputPath}"`,
+        `--from=markdown+mark`,
+        `--css="${cssPath}"`,
         `--metadata title="${activeFile.basename}"`,
         `--resource-path="${vaultPath}"`,
       ].join(" ");
