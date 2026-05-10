@@ -49,6 +49,27 @@ After enabling the plugin, go to **Settings → Kindle Exporter** and fill in:
 
 **One more step in Amazon:** On the same Personal Document Settings page, under "Approved Personal Document E-mail List", **add your Gmail address**. Otherwise Amazon will reject the email.
 
+## 🔒 Security note
+
+Your Gmail App Password is stored in **plaintext** at `<vault>/.obsidian/plugins/kindle-exporter/data.json`. If you sync this folder across devices (Obsidian Sync, iCloud, Google Drive, Dropbox, Git, etc.) or share it, anyone with read access to that file can use the App Password to send email through your Gmail account.
+
+### Recommended: use a dedicated Gmail account
+
+Since this Gmail address is **only ever used to forward EPUBs to your Kindle**, you don't need to use your real personal email. The strongly recommended setup:
+
+1. **Create a new Gmail account** just for this plugin (e.g. `yourname.kindle@gmail.com`) — takes 2 minutes
+2. Enable 2-Step Verification and generate an App Password on the *new* account
+3. Add the *new* address as an Approved Personal Document Email in your Amazon account
+4. Use the new account in the plugin settings
+
+That way, even if `data.json` leaks, the only thing an attacker can do is send email from a throwaway address you never use for anything important.
+
+### Other mitigations
+
+- **App Passwords are scoped** to email-sending only — they cannot read your inbox, change account settings, or be used to log in to Gmail's web UI
+- App Passwords can be **revoked instantly** at [myaccount.google.com/apppasswords](https://myaccount.google.com/apppasswords)
+- Add `data.json` to your sync ignore list if your vault is shared publicly (e.g. a public GitHub-hosted vault)
+
 ## Usage
 
 | Action | How |
